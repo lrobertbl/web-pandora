@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L2 Pandora - Panel de Administración</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <h1>L2 Pandora</h1>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="server-info.html">Info</a></li>
+                <li><a href="register.html">Registro</a></li>
+                <li><a href="admin-panel.html" class="active">Panel Admin</a></li>
+                <li><a href="community.html">Comunidad</a></li>
+                <li><a href="donation.html">Donación</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <h1 class="section-title">Panel de Administración</h1>
+            
+            <!-- Login Section -->
+            <div id="loginSection" class="form-container">
+                <h2 class="form-title">🔐 Acceso al Panel</h2>
+                <form id="adminLoginForm">
+                    <div class="form-group">
+                        <label for="adminUsername">Usuario</label>
+                        <input type="text" id="adminUsername" name="username" required placeholder="Tu usuario">
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Contraseña</label>
+                        <input type="password" id="adminPassword" name="password" required placeholder="Tu contraseña">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ingresar</button>
+                </form>
+                <div id="loginMessage"></div>
+            </div>
+
+            <!-- Admin Dashboard (Hidden by default) -->
+            <div id="adminDashboard" class="admin-dashboard" style="display: none;">
+                <div class="dashboard-header">
+                    <h2 class="dashboard-title">👤 Panel de Control</h2>
+                    <button id="logoutBtn" class="btn btn-secondary">Cerrar Sesión</button>
+                </div>
+
+                <!-- Dashboard Tabs -->
+                <div class="dashboard-tabs">
+                    <button class="tab-btn active" data-tab="accounts">Cuentas</button>
+                    <button class="tab-btn" data-tab="characters">Personajes</button>
+                    <button class="tab-btn" data-tab="stats">Estadísticas</button>
+                    <button class="tab-btn" data-tab="settings">Configuración</button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Accounts Tab -->
+                    <div id="accountsTab" class="tab-pane active">
+                        <div class="action-bar">
+                            <input type="text" id="searchAccounts" placeholder="Buscar cuenta..." class="search-input">
+                            <button class="btn btn-primary">Buscar</button>
+                        </div>
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Usuario</th>
+                                    <th>Email</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="accountsTableBody">
+                                <!-- Dynamic content -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Characters Tab -->
+                    <div id="charactersTab" class="tab-pane">
+                        <div class="action-bar">
+                            <input type="text" id="searchCharacters" placeholder="Buscar personaje..." class="search-input">
+                            <button class="btn btn-primary">Buscar</button>
+                        </div>
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Nivel</th>
+                                    <th>Clase</th>
+                                    <th>Raza</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="charactersTableBody">
+                                <!-- Dynamic content -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Stats Tab -->
+                    <div id="statsTab" class="tab-pane">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <h3>Cuentas Totales</h3>
+                                <p class="stat-number" id="totalAccounts">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>Personajes Totales</h3>
+                                <p class="stat-number" id="totalCharacters">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>Online Actual</h3>
+                                <p class="stat-number" id="onlinePlayers">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>Nivel Promedio</h3>
+                                <p class="stat-number" id="avgLevel">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div id="settingsTab" class="tab-pane">
+                        <div class="settings-container">
+                            <h3 class="settings-title">Configuración del Servidor</h3>
+                            <form id="settingsForm">
+                                <div class="form-group">
+                                    <label for="serverName">Nombre del Servidor</label>
+                                    <input type="text" id="serverName" value="L2J Mobius">
+                                </div>
+                                <div class="form-group">
+                                    <label for="maxAccounts">Máximo de Cuentas por IP</label>
+                                    <input type="number" id="maxAccounts" value="5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="maxChars">Máximo de Personajes por Cuenta</label>
+                                    <input type="number" id="maxChars" value="7">
+                                </div>
+                                <div class="form-group">
+                                    <label for="regEnabled">Registro Habilitado</label>
+                                    <select id="regEnabled">
+                                        <option value="true">Sí</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Guardar Configuración</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>L2 Pandora</h3>
+                    <p>Servidor High-Rate Lineage 2 Interlude con características únicas y comunidad activa.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces</h3>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="server-info.html">Info</a></li>
+                        <li><a href="register.html">Registro</a></li>
+                        <li><a href="community.html">Comunidad</a></li>
+                        <li><a href="donation.html">Donación</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Comunidad</h3>
+                    <ul>
+                        <li><a href="https://discord.gg/MRWkqzxCd">Discord</a></li>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">YouTube</a></li>
+                        <li><a href="#">Foro</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 L2J Mobius. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .main-content {
+            padding: 120px 2rem 60px;
+        }
+        
+        .admin-dashboard {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 10px;
+            padding: 2rem;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .dashboard-title {
+            font-family: 'Orbitron', sans-serif;
+            color: #9b59b6;
+            font-size: 1.5rem;
+        }
+        
+        .dashboard-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            color: #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Rajdhani', sans-serif;
+        }
+        
+        .tab-btn:hover,
+        .tab-btn.active {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: #9b59b6;
+            color: #9b59b6;
+        }
+        
+        .tab-content {
+            min-height: 400px;
+        }
+        
+        .tab-pane {
+            display: none;
+        }
+        
+        .tab-pane.active {
+            display: block;
+        }
+        
+        .action-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 0.8rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 5px;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .admin-table th,
+        .admin-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .admin-table th {
+            background: rgba(0, 212, 255, 0.1);
+            color: #9b59b6;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .admin-table tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: #9b59b6;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+        
+        .settings-container {
+            max-width: 600px;
+        }
+        
+        .settings-title {
+            font-family: 'Orbitron', sans-serif;
+            color: #9b59b6;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+    </style>
+
+    <script src="js/admin-panel.js"></script>
+</body>
+</html>
